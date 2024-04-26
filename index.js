@@ -34,6 +34,18 @@ async function run() {
       const result = await products.toArray();
       res.send(result);
     });
+    app.get('/products/:id', async (req, res) => {
+      const id = req.params.id;
+      const qureay = { _id: new ObjectId(id) };
+      const result = await productCollection.findOne(qureay);
+      res.send(result);
+    });
+    app.get('/myProducts/:email', async (req, res) => {
+      const result = await productCollection
+        .find({ email: req.params.email })
+        .toArray();
+      res.send(result);
+    });
 
     app.post('/products', async (req, res) => {
       const product = req.body;
