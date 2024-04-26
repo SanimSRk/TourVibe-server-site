@@ -1,5 +1,5 @@
 const express = require('express');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config();
 const cors = require('cors');
 const app = express();
@@ -29,6 +29,11 @@ async function run() {
     await client.connect();
     const database = client.db('ToursDB');
     const productCollection = database.collection('Product');
+    app.get('/products', async (req, res) => {
+      const products = productCollection.find();
+      const result = await products.toArray();
+      res.send(result);
+    });
 
     app.post('/products', async (req, res) => {
       const product = req.body;
