@@ -10,11 +10,7 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-//TourVibe66
-// 9kUTR2Lj0hKz4xz7
-
-const uri =
-  'mongodb+srv://TourVibe66:9kUTR2Lj0hKz4xz7@cluster0.mqe77mp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.mqe77mp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -140,6 +136,13 @@ async function run() {
         .find({ countryName: req.params.countryName.toLowerCase() })
         .toArray();
 
+      res.send(result);
+    });
+
+    app.get('/countryDeatils/:id', async (req, res) => {
+      const id = req.params.id;
+      const qureay = { _id: new ObjectId(id) };
+      const result = await productCollection.findOne(qureay);
       res.send(result);
     });
 
